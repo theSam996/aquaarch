@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaArch - Sustainable Insoles</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+    <!-- Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container flex justify-between items-center h-full">
+            <a href="index.html" class="brand">
+                Aqua<span class="accent-text">Arch</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="nav-links md-flex">
+                <a href="index.html#features">Features</a>
+                <a href="foot_scan.html">Foot Scan</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#products">Products</a>
+            </div>
+
+            <div class="nav-actions md-flex">
+                <!-- Guest Links -->
+                <div class="auth-link flex items-center gap-4">
+                    <a href="login.html" class="nav-link">Log In</a>
+                    <a href="signup.html" class="btn btn-primary small">Get Started</a>
+                </div>
+
+                <!-- User Links (Hidden by default) -->
+                <div class="user-link flex items-center gap-4" style="display: none;">
+                    <a href="orders.html" class="text-sm font-medium" style="color:white; margin-right:15px;">Orders</a>
+                    <a href="dashboard.html" class="text-sm font-medium"
+                        style="color:white; margin-right:15px;">Dashboard</a>
+                    <button class="btn btn-outline small logout-btn">Log Out</button>
+                </div>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <div class="md-hidden">
+                <button class="mobile-toggle">
+                    <i data-lucide="menu" color="white"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="container flex flex-col gap-4">
+                <a href="index.html#features">Features</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#products">Products</a>
+                <hr style="border-color: rgba(255,255,255,0.1);" />
+
+                <div class="auth-link flex flex-col gap-2">
+                    <a href="login.html">Log In</a>
+                    <a href="signup.html" class="btn btn-primary w-full" style="color:black">Get Started</a>
+                </div>
+
+                <div class="user-link flex flex-col gap-2" style="display: none;">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="orders.html">Orders</a>
+                    <button class="btn btn-outline w-full logout-btn">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content reveal active">
+                    <div style="max-width: 800px;">
+                        <h1 class="hero-title">Aqua<span class="accent-text">Arch</span></h1>
+                        <h2 class="hero-subtitle">~Step into the comfort~</h2>
+                        <p class="hero-desc">
+                            Custom Insoles Designed From Your 3D Foot Scan. No Store Visit Needed.
+                        </p>
+                        <div class="flex justify-center gap-4">
+                            <a href="signup.html" class="btn btn-primary">
+                                Get Started <i data-lucide="arrow-right" style="margin-left: 8px; width: 18px;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="hero-image-placeholder reveal" style="transition-delay: 0.3s;">
+                        <img src="assets/app_prototype_mockup.png" alt="App Prototype"
+                            style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- About Section -->
+        <section id="about" class="section-padding">
+            <div class="container reveal">
+                <div class="flex flex-col items-center text-center">
+                    <h2 class="section-title">What is Aqua<span class="accent-text">Arch</span>?</h2>
+                    <p class="text-lg" style="max-width: 800px;">
+                        Sustainable insoles made from ocean-grown algae, offering comfort, support, and breathability.
+                        The process involves responsibly collecting algae, drying it, and blending it with biodegradable
+                        polymers. These insoles are lightweight, odor-resistant, and customizable. Prevent foot pain,
+                        improve posture, and get perfectly fitted insoles delivered to your door.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="section-padding bg-secondary">
+            <div class="container reveal">
+                <h4 class="text-center"
+                    style="text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary)">Prototype</h4>
+                <h2 class="section-title text-center mb-12">Base <span class="accent-text">Products</span></h2>
+
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <img src="assets/insole_product.png" alt="EcoSupport" class="product-img">
+                        <h3 class="product-name">EcoSupport</h3>
+                        <p class="product-desc">Made with Polylactic Acid (PLA)</p>
+                        <div class="product-actions">
+                            <button class="btn btn-outline small" onclick="addToCart('EcoSupport', '₹799')">
+                                <i data-lucide="shopping-cart" style="width:16px; margin-right:5px;"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-primary small" onclick="buyProduct('EcoSupport', '₹799')">Buy
+                                Now</button>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <img src="assets/insole_product.png" alt="EcoDomes" class="product-img"
+                            style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)) hue-rotate(40deg)">
+                        <h3 class="product-name">EcoDomes</h3>
+                        <p class="product-desc">Made with Polyhydroxybutyrate (PHB)</p>
+                        <div class="product-actions">
+                            <button class="btn btn-outline small" onclick="addToCart('EcoDomes', '₹1,199')">
+                                <i data-lucide="shopping-cart" style="width:16px; margin-right:5px;"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-primary small" onclick="buyProduct('EcoDomes', '₹1,199')">Buy
+                                Now</button>
+                        </div>
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <img src="assets/insole_product.png" alt="EcoStrides" class="product-img"
+                            style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)) hue-rotate(80deg)">
+                        <h3 class="product-name">EcoStrides</h3>
+                        <p class="product-desc">Made with Polyhydroxyalkanoates (PHA)</p>
+                        <div class="product-actions">
+                            <button class="btn btn-outline small" onclick="addToCart('EcoStrides', '₹2,099')">
+                                <i data-lucide="shopping-cart" style="width:16px; margin-right:5px;"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-primary small" onclick="buyProduct('EcoStrides', '₹2,099')">Buy
+                                Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Ladder -->
+                <div class="price-ladder-section reveal" style="margin-top: 5rem;">
+                    <h2 class="section-title text-center">Price <span class="accent-text">Ladder</span></h2>
+                    <div class="price-ladder-container">
+                        <div class="ladder-line"></div>
+                        <div class="ladder-points">
+                            <div class="ladder-step">
+                                <div class="ladder-price">₹799</div>
+                                <div class="ladder-dot-wrapper">
+                                    <div class="ladder-dot"></div>
+                                </div>
+                            </div>
+                            <div class="ladder-step">
+                                <div class="ladder-price">₹1,199</div>
+                                <div class="ladder-dot-wrapper">
+                                    <div class="ladder-dot"></div>
+                                </div>
+                            </div>
+                            <div class="ladder-step">
+                                <div class="ladder-price">₹2,099</div>
+                                <div class="ladder-dot-wrapper">
+                                    <div class="ladder-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="extra-charge-text">*Extra ₹99 charged above base price for 3D customised insoles*
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Cards -->
+        <section id="features" class="section-padding">
+            <div class="container reveal">
+                <div class="feature-grid">
+                    <div class="glass-card feature-card">
+                        <i data-lucide="smartphone" class="feature-icon"></i>
+                        <h3>3D Scanning</h3>
+                        <p>Customised insole allowing for maximum comfort which fits your foot perfectly due to the 3D
+                            scanning technology.</p>
+                    </div>
+                    <div class="glass-card feature-card">
+                        <i data-lucide="wind" class="feature-icon"></i>
+                        <h3>Insole Creation</h3>
+                        <p>Eco-Positive Impact: Beyond providing comfort, the brand emphasizes its eco-positive impact
+                            by harnessing algae.</p>
+                    </div>
+                    <div class="glass-card feature-card">
+                        <i data-lucide="leaf" class="feature-icon"></i>
+                        <h3>Algae Recycling</h3>
+                        <p>Sustainable Comfort: The core feature of the insole brand is its commitment to
+                            sustainability.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="section-padding bg-secondary">
+            <div class="container reveal">
+                <h2 class="section-title text-center mb-12">How It <span class="accent-text">Works</span></h2>
+
+                <div class="flex flex-col gap-6" style="max-width: 800px; margin: 0 auto;">
+
+                    <!-- Step 1 -->
+                    <div class="process-step">
+                        <div class="process-number">1</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem; color: white;">Scan Your Foot</h3>
+                            <p style="color: var(--text-secondary);">Scan your foot using your smartphone to capture
+                                precise 3D measurements.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="process-step">
+                        <div class="process-number">2</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem; color: white;">Customize Your Insole</h3>
+                            <p style="color: var(--text-secondary);">Choose the insole type designed for your comfort,
+                                activity, and support needs.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="process-step">
+                        <div class="process-number">3</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem; color: white;">Crafted from Ocean-Grown Algae</h3>
+                            <p style="color: var(--text-secondary);">Sustainable algae is processed into a soft,
+                                durable, eco-friendly material.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="process-step">
+                        <div class="process-number">4</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem; color: white;">Precision Manufacturing & Testing</h3>
+                            <p style="color: var(--text-secondary);">Each insole is carefully manufactured and tested
+                                for long-lasting comfort.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="process-step">
+                        <div class="process-number">5</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem; color: white;">Walk Comfortably. Give Back to the Ocean.
+                            </h3>
+                            <p style="color: var(--text-secondary);">Enjoy personalized comfort while helping reduce
+                                ocean pollution.</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <a href="foot_scan.html" class="btn btn-primary">Start Your Scan</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Founders Section (Moved) -->
+        <section id="founders" class="section-padding bg-secondary" style="border-top: 1px solid var(--glass-border);">
+            <div class="container reveal">
+                <h2 class="section-title text-center">Meet the <span class="accent-text">Founders</span></h2>
+                <div class="founders-grid">
+                    <div class="founder-card">
+                        <div class="founder-img-wrapper">
+                            <img src="assets/samar_kumar.jpg" alt="Samar Kumar"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h3 class="founder-name">Samar Kumar</h3>
+                        <p class="founder-role">Full Stack Developer & Business Analyst</p>
+                        <a href="mailto:samargoyal367@gmail.com" class="text-xs text-muted"
+                            style="color: var(--text-secondary); margin-top: 0.5rem; display: block;">samargoyal367@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="padding: 4rem 0; border-top: 1px solid var(--glass-border); background: var(--bg-secondary);">
+        <div class="container">
+            <div class="flex flex-col md-flex-row justify-between items-start gap-8" style="width: 100%;">
+
+                <!-- Left: Brand -->
+                <div style="flex: 1; text-align: left;">
+                    <a href="index.html" style="font-size: 1.5rem; font-weight: bold;">
+                        Aqua<span class="accent-text">Arch</span>
+                    </a>
+                    <p style="margin-top: 0.5rem; max-width: 300px;">
+                        Sustainable steps towards a healthier planet.
+                    </p>
+                </div>
+
+                <!-- Middle: Product -->
+                <div class="flex flex-col gap-2" style="flex: 1; align-items: center; text-align: center;">
+                    <h4 style="font-size: 0.9rem; color: white;">Product</h4>
+                    <a href="#features" style="font-size: 0.9rem; color: var(--text-secondary);">Features</a>
+                    <a href="#how-it-works" style="font-size: 0.9rem; color: var(--text-secondary);">How it Works</a>
+                </div>
+
+                <!-- Right: Company -->
+                <div class="flex flex-col gap-2" style="flex: 1; align-items: flex-end; text-align: right;">
+                    <h4 style="font-size: 0.9rem; color: white;">Company</h4>
+                    <a href="#about" style="font-size: 0.9rem; color: var(--text-secondary);">About</a>
+                    <a href="#founders" style="font-size: 0.9rem; color: var(--text-secondary);">Contact</a>
+                </div>
+            </div>
+
+            <div
+                style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+                &copy; 2026 AquaArch. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

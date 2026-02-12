@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - AquaArch</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container flex justify-between items-center h-full">
+            <a href="index.html" class="brand">Aqua<span class="accent-text">Arch</span></a>
+            <a href="index.html" class="btn btn-outline small">Cancel</a>
+        </div>
+    </nav>
+
+    <div class="container checkout-container">
+        <div class="checkout-card">
+            <div class="step-indicator">
+                <div class="step-dot active" data-step="1">1</div>
+                <div class="step-dot" data-step="2">2</div>
+                <div class="step-dot" data-step="3">3</div>
+                <div class="step-dot" data-step="4">4</div>
+            </div>
+
+            <h2 class="section-title text-center mb-6" id="step-title">Personal Details</h2>
+
+            <form id="checkout-form">
+                <!-- Step 1: Personal Details -->
+                <div class="form-step active" data-step="1">
+                    <div class="input-group">
+                        <label class="input-label">Full Name</label>
+                        <input type="text" id="full-name" class="input-field" placeholder="John Doe" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Phone Number</label>
+                        <input type="tel" id="details-phone" class="input-field" placeholder="+91 98765 43210" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Email</label>
+                        <input type="email" id="details-email" class="input-field" placeholder="john@example.com"
+                            readonly style="opacity: 0.7; cursor: not-allowed;">
+                        <small style="color:var(--text-secondary)">Email is linked to your account</small>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <div></div> <!-- spacer -->
+                        <button type="button" class="btn btn-primary next-btn">Next Step</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Shoe Details -->
+                <div class="form-step" data-step="2">
+                    <div class="input-group">
+                        <label class="input-label">Current Shoe Size</label>
+                        <select id="shoe-size" class="select-field" required>
+                            <option value="">Select Size</option>
+                            <option value="6">US 6</option>
+                            <option value="7">US 7</option>
+                            <option value="8">US 8</option>
+                            <option value="9">US 9</option>
+                            <option value="10">US 10</option>
+                            <option value="11">US 11</option>
+                            <option value="12">US 12</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Activity Level</label>
+                        <select id="activity-level" class="select-field" required>
+                            <option value="low">Low (Sedentary)</option>
+                            <option value="moderate">Moderate (Walking/Light Exercise)</option>
+                            <option value="high">High (Running/Sports)</option>
+                            <option value="athlete">Professional Athlete</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Foot Conditions (Optional)</label>
+                        <textarea id="foot-condition" class="input-field"
+                            placeholder="E.g., Flat feet, Plantar Fasciitis, High Arches..."></textarea>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button type="button" class="btn btn-outline prev-btn">Back</button>
+                        <button type="button" class="btn btn-primary next-btn">Next Step</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Address -->
+                <div class="form-step" data-step="3">
+                    <div class="input-group">
+                        <label class="input-label">Shipping Address</label>
+                        <textarea id="address" class="input-field" placeholder="Street Address, Apt, etc." required
+                            style="min-height: 80px;"></textarea>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="input-group w-full">
+                            <label class="input-label">City</label>
+                            <input type="text" id="city" class="input-field" required>
+                        </div>
+                        <div class="input-group w-full">
+                            <label class="input-label">Zip Code</label>
+                            <input type="text" id="zip" class="input-field" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">State/Country</label>
+                        <input type="text" id="country" class="input-field" placeholder="State, Country" required>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button type="button" class="btn btn-outline prev-btn">Back</button>
+                        <button type="button" class="btn btn-primary next-btn">Review Order</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="form-step" data-step="4">
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--accent-primary); margin-bottom: 2rem;">
+                        <h3 style="color: var(--accent-primary); margin-bottom: 0.5rem;">Order Summary</h3>
+                        <div id="product-summary" style="font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem;">
+                            EcoSupport</div>
+                        <div id="price-summary" style="color: white;">₹799</div>
+                    </div>
+
+                    <p class="text-center" style="margin-bottom: 2rem;">
+                        Please verify your details before confirming. We will use your 3D scan data associated with your
+                        email if available.
+                    </p>
+
+                    <div class="flex justify-between mt-8">
+                        <button type="button" class="btn btn-outline prev-btn">Back</button>
+                        <button type="submit" class="btn btn-primary w-full" style="max-width: 200px;">Confirm
+                            Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { authInitialized } from './script.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Wait for Auth to be ready
+        const auth = await authInitialized;
+
+        lucide.createIcons();
+
+        // State
+        let currentStep = 1;
+        const totalSteps = 4;
+        const titles = ["Personal Details", "Shoe Details", "Shipping Address", "Confirm Order"];
+
+        // UI Elements
+        const form = document.getElementById('checkout-form');
+        const nextBtns = document.querySelectorAll('.next-btn');
+        const prevBtns = document.querySelectorAll('.prev-btn');
+        const steps = document.querySelectorAll('.form-step');
+        const dots = document.querySelectorAll('.step-dot');
+        const titleEl = document.getElementById('step-title');
+        const emailInput = document.getElementById('details-email');
+
+        // Check Auth
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                emailInput.value = user.email;
+            } else {
+                // Not logged in, redirect to Login
+                alert('Please log in to purchase.');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Load Product/Cart Info
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let displayProduct = "Cart Items";
+        let displayPrice = "₹0";
+
+        if (cart.length > 0) {
+            const total = cart.reduce((sum, item) => sum + parseInt(item.price.replace(/[^\d]/g, '')), 0);
+            displayProduct = `Cart Total (${cart.length} items)`;
+            displayPrice = `₹${total}`;
+        } else {
+            // Fallback
+            displayProduct = sessionStorage.getItem('selectedProduct') || 'EcoSupport';
+            displayPrice = sessionStorage.getItem('selectedPrice') || '₹799';
+        }
+
+        document.getElementById('product-summary').innerText = displayProduct;
+        document.getElementById('price-summary').innerText = displayPrice;
+
+        // Navigation Handlers
+        nextBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    changeStep(currentStep + 1);
+                }
+            });
+        });
+
+        prevBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                changeStep(currentStep - 1);
+            });
+        });
+
+        function changeStep(step) {
+            steps.forEach(s => s.classList.remove('active'));
+            document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+
+            dots.forEach(d => {
+                const s = parseInt(d.getAttribute('data-step'));
+                d.classList.remove('active', 'completed');
+                if (s === step) d.classList.add('active');
+                if (s < step) d.classList.add('completed');
+            });
+
+            currentStep = step;
+            titleEl.innerText = titles[step - 1];
+        }
+
+        function validateStep(step) {
+            const currentStepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required]');
+            let valid = true;
+            inputs.forEach(input => {
+                if (!input.value) {
+                    valid = false;
+                    input.style.borderColor = '#EF4444';
+                } else {
+                    input.style.borderColor = 'rgba(255,255,255,0.1)';
+                }
+            });
+            return valid;
+        }
+
+        form.addEventListener('submit', (e) => {
+            window.confirmOrder(e);
+        });
+
+    </script>
+</body>
+
+</html>

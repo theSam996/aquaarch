@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Foot Scan - AquaArch</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container flex justify-between items-center h-full">
+            <a href="index.html" class="brand">Aqua<span class="accent-text">Arch</span></a>
+            <div class="nav-links md-flex">
+                <a href="index.html#features">Features</a>
+                <a href="foot_scan.html" style="color:white; border-bottom: 2px solid var(--accent-primary);">Foot
+                    Scan</a>
+                <a href="index.html#products">Products</a>
+            </div>
+            <div class="nav-actions md-flex">
+                <div class="auth-link flex items-center gap-4">
+                    <a href="login.html" class="nav-link">Log In</a>
+                    <a href="signup.html" class="btn btn-primary small">Get Started</a>
+                </div>
+                <div class="user-link flex items-center gap-4" style="display: none;">
+                    <a href="orders.html" class="text-sm font-medium" style="color:white; margin-right:15px;">Orders</a>
+                    <a href="dashboard.html" class="text-sm font-medium"
+                        style="color:white; margin-right:15px;">Dashboard</a>
+                    <button class="btn btn-outline small logout-btn">Log Out</button>
+                </div>
+            </div>
+            <div class="md-hidden">
+                <button class="mobile-toggle"><i data-lucide="menu" color="white"></i></button>
+            </div>
+        </div>
+        <div class="mobile-menu">
+            <div class="container flex flex-col gap-4">
+                <a href="foot_scan.html">Foot Scan</a>
+                <a href="orders.html" class="user-link" style="display:none">Orders</a>
+                <a href="dashboard.html" class="user-link" style="display:none">Dashboard</a>
+                <div class="auth-link">
+                    <a href="login.html">Log In</a>
+                </div>
+                <button class="btn btn-outline w-full logout-btn user-link" style="display:none">Log Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container scan-container">
+        <header class="mb-12">
+            <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">3D Foot <span class="accent-text">Scan</span></h1>
+            <p style="color: var(--text-secondary); max-width: 600px;">Record a video of your feet for precise 3D
+                analysis and custom insole creation.</p>
+        </header>
+
+        <div class="scan-grid">
+            <!-- Left: Instructions -->
+            <div class="instruction-card">
+                <h3
+                    style="color: var(--accent-primary); display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
+                    <i data-lucide="video" width="20"></i> Recording Instructions
+                </h3>
+
+                <div class="instruction-step">
+                    <div class="step-badge">1</div>
+                    <div>
+                        <h4 style="color: white; margin-bottom: 0.3rem;">Position Your Feet</h4>
+                        <p style="font-size: 0.9rem; margin: 0;">Place your feet flat on the floor, shoulder-width
+                            apart. Stand naturally without leaning.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-badge">2</div>
+                    <div>
+                        <h4 style="color: white; margin-bottom: 0.3rem;">Camera Position</h4>
+                        <p style="font-size: 0.9rem; margin: 0;">Position your camera at a 45-degree angle from the
+                            side, about 2-3 feet away.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-badge">3</div>
+                    <div>
+                        <h4 style="color: white; margin-bottom: 0.3rem;">Lighting</h4>
+                        <p style="font-size: 0.9rem; margin: 0;">Ensure good lighting. Avoid shadows on your feet.
+                            Natural light works best.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-step">
+                    <div class="step-badge">4</div>
+                    <div>
+                        <h4 style="color: white; margin-bottom: 0.3rem;">Recording</h4>
+                        <p style="font-size: 0.9rem; margin: 0;">Record for 10-15 seconds. Slowly rotate your feet if
+                            possible for better analysis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Camera/Upload -->
+            <div class="camera-card">
+                <h3
+                    style="color: var(--accent-primary); display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; justify-content: center;">
+                    <i data-lucide="camera" width="20"></i> Foot Recording
+                </h3>
+
+                <div class="camera-box" id="camera-preview">
+                    <div class="camera-placeholder" id="camera-placeholder-ui">
+                        <i data-lucide="camera-off" width="48" style="opacity: 0.5; margin-bottom: 1rem;"></i>
+                        <p>Click "Start Recording" to begin foot analysis</p>
+                    </div>
+                    <video id="video-feed" autoplay playsinline muted style="display:none;"></video>
+                </div>
+
+                <div class="flex flex-col gap-4 items-center">
+                    <button id="start-camera-btn" class="btn btn-primary" style="min-width: 200px;">
+                        Start Recording
+                    </button>
+
+                    <button id="stop-camera-btn" class="btn btn-outline"
+                        style="min-width: 200px; display: none; border-color: #EF4444; color: #EF4444;">
+                        <span class="recording-dot"></span> Stop Recording
+                    </button>
+
+                    <div class="upload-area w-full">
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Or upload an existing video</p>
+                        <input type="file" id="video-upload" accept="video/*" style="display: none;">
+                        <button class="btn btn-outline small" onclick="document.getElementById('video-upload').click()">
+                            <i data-lucide="upload" width="16" style="margin-right: 5px;"></i> Upload Video
+                        </button>
+                        <p id="upload-status" style="font-size: 0.8rem; margin-top: 5px; color: var(--accent-primary);">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Explanation -->
+        <div style="margin-top: 5rem; text-align: center;">
+            <h3 style="margin-bottom: 2rem;"> How Our Analysis Works</h3>
+            <div class="how-it-works-grid">
+                <div class="hiw-card">
+                    <span class="hiw-icon"></span>
+                    <h4 style="color: var(--accent-primary);">AI-Powered Analysis</h4>
+                    <p style="font-size: 0.85rem;">Our AI scans foot contours to detect arches and pressure points.</p>
+                </div>
+                <div class="hiw-card">
+                    <span class="hiw-icon"></span>
+                    <h4 style="color: var(--accent-primary);">3D Modeling</h4>
+                    <p style="font-size: 0.85rem;">Converts video data into a precise 3D mesh of your feet.</p>
+                </div>
+                <div class="hiw-card">
+                    <span class="hiw-icon"></span>
+                    <h4 style="color: var(--accent-primary);">Custom Recommendations</h4>
+                    <p style="font-size: 0.85rem;">Suggests the perfect material (PLA, PHA) for your foot type.</p>
+                </div>
+                <div class="hiw-card">
+                    <span class="hiw-icon"></span>
+                    <h4 style="color: var(--accent-primary);">Privacy Protected</h4>
+                    <p style="font-size: 0.85rem;">Your data is encrypted and used solely for product customization.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer
+        style="padding: 4rem 0; border-top: 1px solid var(--glass-border); background: var(--bg-secondary); margin-top: auto;">
+        <div class="container">
+            <div class="flex flex-col md-flex-row justify-between items-start gap-8" style="width: 100%;">
+
+                <!-- Left: Brand -->
+                <div style="flex: 1; text-align: left;">
+                    <a href="index.html" style="font-size: 1.5rem; font-weight: bold;">
+                        Aqua<span class="accent-text">Arch</span>
+                    </a>
+                    <p style="margin-top: 0.5rem; max-width: 300px;">
+                        Sustainable steps towards a healthier planet.
+                    </p>
+                </div>
+
+                <!-- Middle: Product -->
+                <div class="flex flex-col gap-2" style="flex: 1; align-items: center; text-align: center;">
+                    <h4 style="font-size: 0.9rem; color: white;">Product</h4>
+                    <a href="index.html#features" style="font-size: 0.9rem; color: var(--text-secondary);">Features</a>
+                    <a href="index.html#how-it-works" style="font-size: 0.9rem; color: var(--text-secondary);">How it
+                        Works</a>
+                </div>
+
+                <!-- Right: Company -->
+                <div class="flex flex-col gap-2" style="flex: 1; align-items: flex-end; text-align: right;">
+                    <h4 style="font-size: 0.9rem; color: white;">Company</h4>
+                    <a href="index.html#about" style="font-size: 0.9rem; color: var(--text-secondary);">About</a>
+                    <a href="index.html#founders" style="font-size: 0.9rem; color: var(--text-secondary);">Contact</a>
+                </div>
+            </div>
+
+            <div
+                style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+                &copy; 2026 AquaArch. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

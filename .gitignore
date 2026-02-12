@@ -1,0 +1,29 @@
+.DS_Store
+thumbs.db
+*~
+*.log
+.vscode/
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
